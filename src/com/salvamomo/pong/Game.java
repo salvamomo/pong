@@ -23,8 +23,8 @@ public class Game implements Runnable {
    boolean running = true;
 	
 	// Static variables that won't vary during Game Execution;
-	private final int WIDTH = 600;
-	private final int HEIGHT = 400;
+	final int WIDTH = 650;
+	final int HEIGHT = 400;
 	
 	JFrame frame;
 	Canvas canvas;
@@ -34,6 +34,8 @@ public class Game implements Runnable {
 	
 	// TODO: Decide whether for this game the players should be two separate variables.
 	Player players[]; // We have at least 2 players!!
+	Ball ball; // And a ball...don't we?
+	
 	private boolean matchRunning = false;
 	
 	public Game () {
@@ -55,7 +57,8 @@ public class Game implements Runnable {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		//player = new Player();
+		//players = new Player(this);
+		//ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5);
 		
 	    canvas.createBufferStrategy(2);
 	    bufferStrategy = canvas.getBufferStrategy();
@@ -64,16 +67,46 @@ public class Game implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		long beginLoopTime;
+		long endLoopTime;
+		long currentUpdateTime = System.nanoTime();
+		long lastUpdateTime = 0;
+		long deltaLoop = 0;
+		
 		System.out.printf("Ey yo! \\o/.  Match running?: %b", matchRunning);
 		while (running) {
+			beginLoopTime = System.nanoTime();
+			lastUpdateTime = currentUpdateTime;
+			currentUpdateTime = System.nanoTime();
 			
+			update((int) ((currentUpdateTime - lastUpdateTime)/(1000*1000)));
+			render();
 			
 			if (matchRunning) {
 				System.out.println("Match is on fire! -- Press <enter> to Pause it");
 			}
+			else System.out.println("Press <enter> to resume the match");
+			if (!canvas.hasFocus()) System.out.println("Click to focus, you bastard");
 			
+			endLoopTime = System.nanoTime();
+			lastUpdateTime = endLoopTime - beginLoopTime;
+			if (lastUpdateTime < deltaLoop) {
+				// Put the loop to sleep, is not time to update yet.
+				try {
+					Thread.sleep((desiredDeltaLoop - deltaLoop)/(1000*1000));
+				} catch (InterruptedException ex) {
+					// Don't do nothing
+				}
+			}
 		}
+	}
+	
+	private void render() {
+	      Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+	      g.clearRect(0, 0, WIDTH, HEIGHT);
+	      render(g);
+	      g.dispose();
+	      bufferStrategy.show();
 	}
 	
 	public void resume() {
@@ -91,7 +124,7 @@ public class Game implements Runnable {
 	 * This function should call all entities that need to display data on render time.
 	 */	
 	protected void render(Graphics2D g) {
-		
+		g.fillRect(10, (HEIGHT / 2) - 10, 10, 20);
 	}
 	
 	public static void main(String [] args) {
