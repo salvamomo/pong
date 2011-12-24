@@ -10,7 +10,7 @@ public class Ball {
 	private boolean moveY;
 	private boolean moveX;
 	
-	// Not used for now. Yes... squared ball... doh
+	private int speed;
 	private int radius;
 	
 	public Ball(int X, int Y) {
@@ -30,7 +30,7 @@ public class Ball {
 	}
 	
 	public void render(Graphics2D g) {
-		g.fillRoundRect(game.WIDTH / 2, game.HEIGHT / 2, 10, 10, 5, 5);
+		g.fillRoundRect((game.WIDTH / 2) -5 , (game.HEIGHT / 2) - 5, 10, 10, radius, radius);
 	}
 	
 }

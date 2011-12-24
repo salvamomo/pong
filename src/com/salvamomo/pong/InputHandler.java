@@ -22,7 +22,14 @@ public class InputHandler implements KeyListener {
 		switch (e.getKeyCode()) {
 			// Fires/Pauses the match	
 			case KeyEvent.VK_ENTER:
-				game.resume();
+				if (game.getMatchStatus()) {
+					System.out.println("Match Paused. Press <enter> to resume the match");
+					game.setMatchStatus(false);
+				}
+				else {
+					System.out.println("Match is on fire! -- Press <enter> to Pause it");
+					game.setMatchStatus(true);
+				}
 				break;
 			case KeyEvent.VK_UP:
 				up = true;

@@ -25,6 +25,8 @@ public class Game implements Runnable {
 	// Static variables that won't vary during Game Execution;
 	final int WIDTH = 650;
 	final int HEIGHT = 400;
+	// Scoreboard dimensions and other variables
+	final int SB_HEIGHT = 25;
 	
 	JFrame frame;
 	Canvas canvas;
@@ -44,7 +46,7 @@ public class Game implements Runnable {
 		panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 		panel.setLayout(null);
-		
+
 		canvas = new Canvas();
 		canvas.setBounds(0, 0, WIDTH, HEIGHT);
 		canvas.setIgnoreRepaint(true);
@@ -59,7 +61,7 @@ public class Game implements Runnable {
 		
 		players[0] = new Player(this, 10, (HEIGHT / 2) - 10);
 		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10);
-		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5, 10);
+		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5, 50);
 		
 	    canvas.createBufferStrategy(2);
 	    bufferStrategy = canvas.getBufferStrategy();
@@ -82,11 +84,7 @@ public class Game implements Runnable {
 			
 			update((int) ((currentUpdateTime - lastUpdateTime)/(1000*1000)));
 			render();
-			
-			if (matchRunning) {
-				System.out.println("Match is on fire! -- Press <enter> to Pause it");
-			}
-			else System.out.println("Press <enter> to resume the match");
+
 			if (!canvas.hasFocus()) System.out.println("Click to focus, you bastard");
 			
 			endLoopTime = System.nanoTime();
@@ -110,20 +108,16 @@ public class Game implements Runnable {
 	      bufferStrategy.show();
 	}
 	
-	public void resume() {
-		this.matchRunning = !matchRunning;
-	}
-	
 	/*
 	 * This function should call all entities that need to be updated in game time.
 	 */
 	protected void update(int deltaTime) {
 		ball.update(deltaTime);
-		if (input.down) players[0].moveDown();
-		else if (input.up) players[0].moveUp();
+		if (input.s) players[0].moveDown();
+		else if (input.w) players[0].moveUp();
 		
-		if (input.w) players[1].moveUp();
-		else if (input.s) players[1].moveDown();
+		if (input.up) players[1].moveUp();
+		else if (input.down) players[1].moveDown();
 		
 		for (int i = 0; i < players.length ; i++) {
 			players[i].update(deltaTime);
@@ -134,10 +128,34 @@ public class Game implements Runnable {
 	 * This function should call all entities that need to display data on render time.
 	 */	
 	protected void render(Graphics2D g) {
+		if (!this.matchRunning) this.renderPauseBox(g);
+		this.renderScoreBoard(g);
 		ball.render(g);
 		for (int i = 0; i < players.length ; i++) {
 			players[i].render(g);
 		}
+	}
+	
+	public boolean getMatchStatus() {
+		return this.matchRunning;
+	}
+	
+	public void setMatchStatus(boolean status) {
+		this.matchRunning = status;
+	}
+	
+	/**
+	 * @function 
+	 * Draws in screen the match data. (score for each players, math duration, etc...)
+	 * This should be structured in a different way, but is in the main class to keep things simpler for now.
+	 */
+	public void renderScoreBoard(Graphics2D g) {
+		g.fillRect(0, 0, WIDTH, SB_HEIGHT);
+	}
+	
+	public void renderPauseBox(Graphics2D g) {
+//		g.fillRect(())
+		g.fillRect((WIDTH / 2) - 200, (HEIGHT / 2) - 40, 400, 80);
 	}
 	
 	public static void main(String [] args) {
