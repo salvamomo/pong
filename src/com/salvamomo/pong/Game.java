@@ -33,7 +33,7 @@ public class Game implements Runnable {
 	InputHandler input = new InputHandler(this);
 	
 	// TODO: Decide whether for this game the players should be two separate variables.
-	Player players[]; // We have at least 2 players!!
+	Player players[] = new Player[2];// We have at least 2 players!!
 	Ball ball; // And a ball...don't we?
 	
 	private boolean matchRunning = false;
@@ -57,8 +57,9 @@ public class Game implements Runnable {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		//players = new Player(this);
-		//ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5);
+		players[0] = new Player(this, 10, (HEIGHT / 2) - 10);
+		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10);
+		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5, 10);
 		
 	    canvas.createBufferStrategy(2);
 	    bufferStrategy = canvas.getBufferStrategy();
@@ -117,14 +118,26 @@ public class Game implements Runnable {
 	 * This function should call all entities that need to be updated in game time.
 	 */
 	protected void update(int deltaTime) {
+		ball.update(deltaTime);
+		if (input.down) players[0].moveDown();
+		else if (input.up) players[0].moveUp();
 		
+		if (input.w) players[1].moveUp();
+		else if (input.s) players[1].moveDown();
+		
+		for (int i = 0; i < players.length ; i++) {
+			players[i].update(deltaTime);
+		}
 	}
 	
 	/*
 	 * This function should call all entities that need to display data on render time.
 	 */	
 	protected void render(Graphics2D g) {
-		g.fillRect(10, (HEIGHT / 2) - 10, 10, 20);
+		ball.render(g);
+		for (int i = 0; i < players.length ; i++) {
+			players[i].render(g);
+		}
 	}
 	
 	public static void main(String [] args) {

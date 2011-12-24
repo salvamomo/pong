@@ -22,7 +22,6 @@ public class Player {
 	}
 	
 	protected void update(int deltaTime) {
-		
 	}
 	
 	protected void render(Graphics2D g) {
@@ -34,7 +33,7 @@ public class Player {
 	}
 
 	public void setY(int y) {
-		if ((y < (this.game.HEIGHT) -20) && y > 0)
+		if ((y < (this.game.HEIGHT) -10) && y > 10)
 			this.y = y;
 	}
 	
