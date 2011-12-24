@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 public class Player {
 	
 	Game game;
-	private int y;
-	private int x;
+	private float y;
+	private float x;
 	private int score;
 	
-	public Player(Game game, int X, int Y) {
+	public Player(Game game, float X, float Y) {
 		this.game = game;
 		this.x = X;
 		this.setY(Y);
@@ -17,18 +17,18 @@ public class Player {
 	}
 	
 	public void moveUp() {
-		this.setY(this.getY() - 1);
+		this.setY(this.getY() - 0.5f);
 	}
 	public void moveDown() {
-		this.setY(this.getY() + 1);
+		this.setY(this.getY() + 0.5f);
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		if ((y < (this.game.HEIGHT) -10) && y > 10  + game.SB_HEIGHT)
+	public void setY(float y) {
+		if ((y + game.PLAYERS_HEIGHT < (game.HEIGHT)) && y > game.SB_HEIGHT)
 			this.y = y;
 	}
 
@@ -44,7 +44,7 @@ public class Player {
 	}
 	
 	protected void render(Graphics2D g) {
-		g.fillRect(this.x, this.y - 10, 10, 20); 
+		g.fillRect((int) this.x, (int) this.y, 10, game.PLAYERS_HEIGHT); 
 	}
 	
 }

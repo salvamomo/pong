@@ -47,6 +47,12 @@ public class InputHandler implements KeyListener {
 				s = true;
 				if (w == true) w = false;
 				break;
+			case KeyEvent.VK_0:
+				game.ball.setSpeed(+0.01f);
+				break;
+			case KeyEvent.VK_9:
+				game.ball.setSpeed(-0.01f);
+				break;
 		}
 	}
 

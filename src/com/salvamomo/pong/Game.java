@@ -28,6 +28,7 @@ public class Game implements Runnable {
 	// Scoreboard dimensions and other variables
 	final int SB_HEIGHT = 25;
 	final int COURT_START = SB_HEIGHT;
+	final int PLAYERS_HEIGHT = 25;
 	
 	JFrame frame;
 	Canvas canvas;
@@ -62,7 +63,7 @@ public class Game implements Runnable {
 		
 		players[0] = new Player(this, 10, (HEIGHT / 2) - 10 + SB_HEIGHT);
 		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10 + SB_HEIGHT);
-		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50);
+		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50, 0.2f);
 		
 	    canvas.createBufferStrategy(2);
 	    bufferStrategy = canvas.getBufferStrategy();
@@ -77,16 +78,18 @@ public class Game implements Runnable {
 		long lastUpdateTime = 0;
 		long deltaLoop = 0;
 		
-		System.out.printf("Ey yo! \\o/.  Match running?: %b", matchRunning);
+		System.out.printf("Ey yo! \\o/.  Match running?: %b \n", matchRunning);
 		while (running) {
 			beginLoopTime = System.nanoTime();
 			lastUpdateTime = currentUpdateTime;
 			currentUpdateTime = System.nanoTime();
 			
-			update((int) ((currentUpdateTime - lastUpdateTime)/(1000*1000)));
+			if (matchRunning) {
+				update((int) ((currentUpdateTime - lastUpdateTime)/(1000*1000)));
+			}
 			render();
 
-			if (!canvas.hasFocus()) System.out.println("Click to focus, you bastard");
+			if (!canvas.hasFocus()) System.out.println("Click to focus, you bastard \n");
 			
 			endLoopTime = System.nanoTime();
 			lastUpdateTime = endLoopTime - beginLoopTime;
