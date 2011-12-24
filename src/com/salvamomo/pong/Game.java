@@ -27,6 +27,7 @@ public class Game implements Runnable {
 	final int HEIGHT = 400;
 	// Scoreboard dimensions and other variables
 	final int SB_HEIGHT = 25;
+	final int COURT_START = SB_HEIGHT;
 	
 	JFrame frame;
 	Canvas canvas;
@@ -59,9 +60,9 @@ public class Game implements Runnable {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		players[0] = new Player(this, 10, (HEIGHT / 2) - 10);
-		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10);
-		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5, 50);
+		players[0] = new Player(this, 10, (HEIGHT / 2) - 10 + SB_HEIGHT);
+		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10 + SB_HEIGHT);
+		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50);
 		
 	    canvas.createBufferStrategy(2);
 	    bufferStrategy = canvas.getBufferStrategy();

@@ -28,7 +28,7 @@ public class Player {
 	}
 
 	public void setY(int y) {
-		if ((y < (this.game.HEIGHT) -10) && y > 10)
+		if ((y < (this.game.HEIGHT) -10) && y > 10  + game.SB_HEIGHT)
 			this.y = y;
 	}
 
