@@ -65,7 +65,7 @@ public class Game implements Runnable {
 		
 		players[0] = new Player(this, 10, (HEIGHT / 2) - 10 + SB_HEIGHT);
 		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10 + SB_HEIGHT);
-		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50, 0.2f);
+		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50, 0.3f);
 		
 	    canvas.createBufferStrategy(2);
 	    bufferStrategy = canvas.getBufferStrategy();

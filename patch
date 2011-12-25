@@ -1,0 +1,13 @@
+diff --git a/src/com/salvamomo/pong/Game.java b/src/com/salvamomo/pong/Game.java
+index 1f1af95..a50794c 100644
+--- a/src/com/salvamomo/pong/Game.java
++++ b/src/com/salvamomo/pong/Game.java
+@@ -65,7 +65,7 @@ public class Game implements Runnable {
+ 		
+ 		players[0] = new Player(this, 10, (HEIGHT / 2) - 10 + SB_HEIGHT);
+ 		players[1] = new Player(this, WIDTH - 20, (HEIGHT / 2) - 10 + SB_HEIGHT);
+-		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50, 0.2f);
++		ball = new Ball(this, (WIDTH / 2) - 5, (HEIGHT / 2) - 5  + SB_HEIGHT, 50, 0.3f);
+ 		
+ 	    canvas.createBufferStrategy(2);
+ 	    bufferStrategy = canvas.getBufferStrategy();
