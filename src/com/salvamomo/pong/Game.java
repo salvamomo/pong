@@ -8,6 +8,7 @@ package com.salvamomo.pong;
  */
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -84,12 +85,10 @@ public class Game implements Runnable {
 			lastUpdateTime = currentUpdateTime;
 			currentUpdateTime = System.nanoTime();
 			
-			if (matchRunning) {
+			if (matchRunning && canvas.hasFocus()) {
 				update((int) ((currentUpdateTime - lastUpdateTime)/(1000*1000)));
 			}
 			render();
-
-			if (!canvas.hasFocus()) System.out.println("Click to focus, you bastard \n");
 			
 			endLoopTime = System.nanoTime();
 			lastUpdateTime = endLoopTime - beginLoopTime;
@@ -132,12 +131,13 @@ public class Game implements Runnable {
 	 * This function should call all entities that need to display data on render time.
 	 */	
 	protected void render(Graphics2D g) {
-		if (!this.matchRunning) this.renderPauseBox(g);
 		this.renderScoreBoard(g);
 		ball.render(g);
 		for (int i = 0; i < players.length ; i++) {
 			players[i].render(g);
 		}
+		if (!this.matchRunning) this.renderPauseBox(g);
+		if (!canvas.hasFocus()) this.renderFocusMsg(g);
 	}
 	
 	public boolean getMatchStatus() {
@@ -157,9 +157,30 @@ public class Game implements Runnable {
 		g.fillRect(0, 0, WIDTH, SB_HEIGHT);
 	}
 	
-	public void renderPauseBox(Graphics2D g) {
-//		g.fillRect(())
-		g.fillRect((WIDTH / 2) - 200, (HEIGHT / 2) - 40, 400, 80);
+	public void renderPauseBox(Graphics2D g) {		
+		g.setColor(Color.BLUE);
+		g.fillRect((WIDTH / 2) - 200, (HEIGHT / 2) + SB_HEIGHT - 40, 400, 80);
+		g.setColor(Color.WHITE);
+		g.fillRect((WIDTH / 2) - 190, (HEIGHT / 2) + SB_HEIGHT - 30, 380, 60);
+		g.setColor(Color.BLACK);
+		g.drawString("Match Paused. Press <enter> to resume!", (WIDTH / 2) - 130, (HEIGHT / 2) + SB_HEIGHT + 5);
+	}
+	
+	public void renderFocusMsg(Graphics2D g) {
+		g.setColor(Color.BLUE);
+		g.fillRect((WIDTH / 2) - 200, (HEIGHT / 2) + SB_HEIGHT - 40, 400, 80);
+		g.setColor(Color.WHITE);
+		g.fillRect((WIDTH / 2) - 190, (HEIGHT / 2) + SB_HEIGHT - 30, 380, 60);
+		g.setColor(Color.BLACK);
+		g.drawString("Click to focus, you bastard!", (WIDTH / 2) - 90, (HEIGHT / 2) + SB_HEIGHT + 5);
+	}
+	
+	public void scoreGoal(int playerIndex) {
+		players[playerIndex].setScore(players[playerIndex].getScore() + 1);
+		System.out.printf("Player %d has scored a goal \n", playerIndex + 1);
+		int score1 = players[0].getScore();
+		int score2 = players[1].getScore();
+		System.out.printf("Player 1 %d -- %d Player 2\n", score1, score2);
 	}
 	
 	public static void main(String [] args) {

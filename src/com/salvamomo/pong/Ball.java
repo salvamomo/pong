@@ -47,25 +47,25 @@ public class Ball {
 		// X-axis movement. This is more complex, as needs to check for collisions with players
 		if (moveX) {
 			if ((x + speed + 10) < game.WIDTH - 20) setX(x + speed);
-			else if (((x + speed + 10) >= game.WIDTH - 20) && ((x + speed + 10) <= game.WIDTH - 15)) {
+			else if (((x + speed + 10) >= game.WIDTH - 20) && ((x + speed + 10) <= game.WIDTH - 18)) {
 				if (checkPlayerCollision(1)) moveX = !moveX;
 				else {
 					setX(x + speed);
 				}
 			}
-			else if ((x + speed + 10) > game.WIDTH - 15) {
+			else if ((x + speed + 10) > game.WIDTH - 18) {
 				if (!checkPlayerCollision(1)) scoreGoal(0);
 			}
 		}
 		else if (!moveX) {
 			if ((x - speed) > 20) setX(x - speed);
-			else if (((x - speed) <= 20) && ((x - speed) >= 15)) {
+			else if (((x - speed) <= 20) && ((x - speed) >= 18)) {
 				if (checkPlayerCollision(0)) moveX = !moveX;
 				else {
 					setX(x - speed);
 				}
 			}
-			else if ((x - speed) < 15) {
+			else if ((x - speed) < 18) {
 				if (!checkPlayerCollision(0)) scoreGoal(1);
 			}
 		}
@@ -89,13 +89,15 @@ public class Ball {
 	
 	public boolean checkPlayerCollision(int playerIndex) {
 		float playerY = game.players[playerIndex].getY();
-		if ((playerY <= y + game.PLAYERS_HEIGHT) && (playerY + game.PLAYERS_HEIGHT >= y)) return true;
+		if ((playerY <= y + game.PLAYERS_HEIGHT) && (playerY + game.PLAYERS_HEIGHT >= y)) {
+			game.players[playerIndex].setLastShootCollided(true);
+			return true;
+		}
 		else return false;
 	}
 	
 	public void scoreGoal(int playerIndex) {
-		// TODO: Call function of given player to score the goal.
-		System.out.printf("Player %d has scored a goal \n", playerIndex);
+		game.scoreGoal(playerIndex);
 		moveX = !moveX;
 	}
 	
