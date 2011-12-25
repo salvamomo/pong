@@ -102,12 +102,19 @@ public class Ball {
 	}
 	
 	public float getSpeed() {
-		return speed;
+		return Round(speed, 2);
 	}
 
 	public void setSpeed(float gameSpeed) {
 		this.speed += gameSpeed;
 		System.out.printf("GameSpeed increased by %f -- Actual GameSpeed %f \n", gameSpeed, this.speed);
 	}
+	
+	 public static float Round(float Rval, int Rpl) {
+		  float p = (float)Math.pow(10,Rpl);
+		  Rval = Rval * p;
+		  float tmp = Math.round(Rval);
+		  return (float)tmp/p;
+	 }
 	
 }

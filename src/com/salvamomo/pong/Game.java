@@ -42,6 +42,7 @@ public class Game implements Runnable {
 	Ball ball; // And a ball...don't we?
 	
 	private boolean matchRunning = false;
+	private int matchTime;
 	
 	public Game () {
 		frame = new JFrame("Pong");
@@ -87,11 +88,13 @@ public class Game implements Runnable {
 			
 			if (matchRunning && canvas.hasFocus()) {
 				update((int) ((currentUpdateTime - lastUpdateTime)/(1000*1000)));
+				matchTime += 1;
 			}
 			render();
 			
 			endLoopTime = System.nanoTime();
-			lastUpdateTime = endLoopTime - beginLoopTime;
+			lastUpdateTime = endLoopTime - beginLoopTime; 
+			
 			if (lastUpdateTime < deltaLoop) {
 				// Put the loop to sleep, is not time to update yet.
 				try {
@@ -154,7 +157,18 @@ public class Game implements Runnable {
 	 * This should be structured in a different way, but is in the main class to keep things simpler for now.
 	 */
 	public void renderScoreBoard(Graphics2D g) {
+		String score1 = "SCORE Player 1: " + players[0].getScore();
+		String score2 = "SCORE Player 2: " + players[1].getScore();
+		
 		g.fillRect(0, 0, WIDTH, SB_HEIGHT);
+		g.setColor(Color.GREEN);
+		g.drawString(score1, 10, 17);
+		g.drawString(score2, WIDTH - 125 , 17);
+		g.setColor(Color.WHITE);
+		g.drawString("TIME:" + matchTime / (1000), WIDTH / 2 - 60, 17);
+		g.drawString("Game Speed: " + ball.getSpeed(), WIDTH / 2 + 20, 17);
+		
+		g.setColor(Color.BLACK);
 	}
 	
 	public void renderPauseBox(Graphics2D g) {		
